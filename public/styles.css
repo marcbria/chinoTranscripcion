@@ -2,10 +2,12 @@
   --bg: #f7f7f8;
   --panel: #ffffff;
   --border: #d9d9e0;
-  --accent: #007e11;         /* Verd UAB */
-  --accent-soft: #e6f4e8;
-  --sort-bg: #e6f4e8;        /* Verd clar per a la columna ordenada */
-  --sort-border: #007e11;
+  --accent: #007e11;           /* Verde UAB oscuro */
+  --accent-dark: #005c0b;      /* Verde UAB aún más oscuro */
+  --accent-soft: #e6f4e8;      /* Verde UAB claro */
+  --sort-bg: #007e11;          /* Fondo de cabecera activa (verde oscuro) */
+  --sort-bg-inactive: #f4f7f4; /* Fondo de cabeceras inactivas (verde muy claro) */
+  --sort-active-bg: #c8e6c9;   /* Fondo de la celda activa (verde claro) */
   --filter-bg: #e8f5e9;
   --text: #1a202c;
   --muted: #6b7280;
@@ -21,7 +23,9 @@ body {
   line-height: 1.4;
 }
 
-/* ─── Capçalera de la pàgina ─── */
+/* ─── Capçalera de la pàgina ───
+   Font idèntica a la del menú "Libros" del header UAB.
+*/
 .page-header {
   background: var(--panel);
   padding: 1.5rem 1.5rem 1rem;
@@ -29,15 +33,28 @@ body {
 }
 
 .page-header h1 {
-  margin: 0 0 0.25rem;
-  font-size: 1.4rem;
+  margin: 0 0 0.5rem;
+  font-family: 'NimbusSanL', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
   color: #1a1a1a;
 }
 
 .page-header .subtitle {
   margin: 0;
-  color: var(--muted);
   font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.page-header .subtitle a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.page-header .subtitle a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
 }
 
 /* ─── Botons genèrics ─── */
@@ -56,7 +73,7 @@ button.secondary { background: #f0f0f3; }
 
 .hidden { display: none !important; }
 
-/* ─── Intro (visible per defecte, amb botó X) ─── */
+/* ─── Intro ─── */
 #intro-panel {
   position: relative;
   background: var(--panel);
@@ -64,7 +81,6 @@ button.secondary { background: #f0f0f3; }
   padding: 1.25rem 3rem 1.25rem 1.5rem;
   border: 1px solid var(--border);
   border-left: 5px solid var(--accent);
-  /* Sense max-height ni overflow: la pàgina sencera scrollea */
 }
 
 #intro-panel.hidden {
@@ -154,7 +170,8 @@ main { padding: 0 1.5rem 3rem; }
 }
 
 /* ─── Taula ───
-   Sense max-height: la pàgina sencera scrollea.
+   Sin max-height ni overflow: la página entera hace scroll.
+   Sin overflow-x: para no romper position:sticky del thead.
 */
 .table-wrapper {
   background: var(--panel);
@@ -170,33 +187,48 @@ table {
   table-layout: auto;
 }
 
+/* Thead sticky con sombra para simular un borde inferior fino
+   cuando se superpone al contenido al hacer scroll. */
 thead {
   position: sticky;
   top: 0;
   z-index: 5;
+  box-shadow: 0 1px 0 0 #e0e0e0;
 }
 
 thead th {
-  background: var(--panel);
-  border-bottom: 2px solid var(--border);
+  background: var(--sort-bg-inactive);
+  color: #1a1a1a;
+  border-bottom: 1px solid var(--border);
   padding: 0.6rem 0.75rem;
   text-align: left;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
   vertical-align: middle;
+  transition: background 0.15s, color 0.15s;
 }
 
-/* Columna activa (ordenada): fons verd clar + vora inferior verda */
+thead th:hover {
+  background: #e8efe8;
+}
+
+/* Columna activa (ordenada): verde oscuro + texto blanco.
+   Enfatizamos con verde oscuro para destacar el criterio de orden. */
 thead th.sorted {
   background: var(--sort-bg);
-  border-bottom-color: var(--sort-border);
+  color: #ffffff;
+  border-bottom-color: var(--accent-dark);
+}
+
+thead th.sorted:hover {
+  background: var(--accent-dark);
 }
 
 thead th .sort-indicator {
   margin-left: 0.4rem;
   font-size: 0.8rem;
-  color: var(--accent);
+  color: inherit;
 }
 
 /* ─── Fila de filtres ─── */
@@ -205,8 +237,11 @@ thead tr.filter-row th {
   padding: 0.4rem 0.5rem;
   cursor: default;
   vertical-align: middle;
+  /* Quitamos la sombra heredada de thead para las filas de filtros */
+  box-shadow: none;
 }
 
+/* Cuando un filtro está activo, fondo verde claro */
 thead tr.filter-row th.filtered {
   background: var(--filter-bg);
 }
@@ -218,7 +253,7 @@ thead tr.filter-row input {
   border-radius: 0;
   padding: 0.45rem 0.5rem;
   font-size: 0.85rem;
-  height: 34px;   /* Más alto que antes */
+  height: 34px;
 }
 
 thead tr.filter-row input:focus {
@@ -232,9 +267,20 @@ tbody td {
   border-bottom: 1px solid #eee;
   padding: 0.5rem 0.75rem;
   vertical-align: middle;
+  /* Enfatizamos las celdas de la columna ordenada con verde claro */
 }
 
 tbody tr:hover { background: #fafbff; }
+
+/* Columna activa en el cuerpo: verde claro tenue.
+   Se aplica mediante nth-child dinámico desde JS (ver app.js). */
+tbody td.sorted-col {
+  background: var(--sort-active-bg);
+}
+
+tbody tr:hover td.sorted-col {
+  background: #b2dfb4;
+}
 
 .audio-cell audio {
   height: 28px;
@@ -247,7 +293,6 @@ tbody tr:hover { background: #fafbff; }
   color: var(--muted);
 }
 
-/* ─── Estats de càrrega ─── */
 #loading-indicator,
 #end-of-list {
   text-align: center;
@@ -276,7 +321,7 @@ tbody tr:hover { background: #fafbff; }
   }
 
   .page-header h1 {
-    font-size: 1.15rem;
+    font-size: 16px;
   }
 
   .controls {
@@ -289,7 +334,6 @@ tbody tr:hover { background: #fafbff; }
     padding: 0.5rem 0.6rem;
   }
 
-  /* Label "Búsqueda global" amagada en mòbil per guanyar espai */
   .global-filter label {
     display: none;
   }
@@ -298,9 +342,18 @@ tbody tr:hover { background: #fafbff; }
     flex: 1 1 100%;
   }
 
-  /* Taula: scroll horitzontal si cal, però amplades mínimes per veure més columnes */
+  /* Sin overflow-x en el wrapper: permite que la tabla se desborde
+     del viewport manteniendo thead sticky funcional.
+     El usuario puede hacer scroll horizontal en la página completa. */
   .table-wrapper {
-    overflow-x: auto;
+    overflow: visible;
+  }
+
+  table {
+    /* Anchos mínimos compactos: el contenido decide el resto */
+    table-layout: auto;
+    width: auto;
+    min-width: 100%;
   }
 
   thead th {
@@ -308,35 +361,43 @@ tbody tr:hover { background: #fafbff; }
     font-size: 0.85rem;
   }
 
-  /* Filtres compactes: només "Filtrar" com a placeholder i amplada mínima */
+  /* Filtros muy compactos en móvil */
   thead tr.filter-row input {
-    min-width: 60px;
-    padding: 0.4rem 0.35rem;
+    min-width: 50px;
+    width: 60px;
+    padding: 0.35rem 0.3rem;
     font-size: 0.8rem;
-    height: 32px;
+    height: 30px;
   }
 
   tbody td {
-    padding: 0.4rem 0.4rem;
+    padding: 0.4rem 0.35rem;
     font-size: 0.85rem;
+    white-space: nowrap;
   }
 
   .audio-cell audio {
-    width: 120px;
+    width: 100px;
     height: 26px;
   }
 }
 
 @media (max-width: 480px) {
   .page-header h1 {
-    font-size: 1rem;
+    font-size: 15px;
   }
 
   thead tr.filter-row input {
-    min-width: 50px;
+    min-width: 44px;
+    width: 52px;
+  }
+
+  tbody td {
+    padding: 0.35rem 0.3rem;
+    font-size: 0.8rem;
   }
 
   .audio-cell audio {
-    width: 100px;
+    width: 80px;
   }
 }
