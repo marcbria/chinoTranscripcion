@@ -1,0 +1,342 @@
+:root {
+  --bg: #f7f7f8;
+  --panel: #ffffff;
+  --border: #d9d9e0;
+  --accent: #007e11;         /* Verd UAB */
+  --accent-soft: #e6f4e8;
+  --sort-bg: #e6f4e8;        /* Verd clar per a la columna ordenada */
+  --sort-border: #007e11;
+  --filter-bg: #e8f5e9;
+  --text: #1a202c;
+  --muted: #6b7280;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* ─── Capçalera de la pàgina ─── */
+.page-header {
+  background: var(--panel);
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+  color: #1a1a1a;
+}
+
+.page-header .subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ─── Botons genèrics ─── */
+button {
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 0.5rem 0.9rem;
+  border-radius: 0;
+  font-size: 0.9rem;
+}
+
+button:hover { background: var(--accent-soft); }
+
+button.secondary { background: #f0f0f3; }
+
+.hidden { display: none !important; }
+
+/* ─── Intro (visible per defecte, amb botó X) ─── */
+#intro-panel {
+  position: relative;
+  background: var(--panel);
+  margin: 1rem 1.5rem;
+  padding: 1.25rem 3rem 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--accent);
+  /* Sense max-height ni overflow: la pàgina sencera scrollea */
+}
+
+#intro-panel.hidden {
+  display: none;
+}
+
+#intro-panel h1 { font-size: 1.1rem; }
+#intro-panel p { margin: 0.5rem 0; }
+
+.intro-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.intro-close:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+main { padding: 0 1.5rem 3rem; }
+
+/* ─── Controls ─── */
+.controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  margin-top: 1rem;
+}
+
+.global-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.55rem 0.7rem;
+  flex: 1;
+  min-width: 260px;
+}
+
+.global-filter label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.global-filter input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  background: transparent;
+  padding-right: 1.6rem;
+}
+
+.global-filter-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.counter {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Taula ───
+   Sense max-height: la pàgina sencera scrollea.
+*/
+.table-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  overflow: visible;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  table-layout: auto;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+thead th {
+  background: var(--panel);
+  border-bottom: 2px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Columna activa (ordenada): fons verd clar + vora inferior verda */
+thead th.sorted {
+  background: var(--sort-bg);
+  border-bottom-color: var(--sort-border);
+}
+
+thead th .sort-indicator {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+/* ─── Fila de filtres ─── */
+thead tr.filter-row th {
+  background: #fafafa;
+  padding: 0.4rem 0.5rem;
+  cursor: default;
+  vertical-align: middle;
+}
+
+thead tr.filter-row th.filtered {
+  background: var(--filter-bg);
+}
+
+thead tr.filter-row input {
+  width: 100%;
+  min-width: 70px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.85rem;
+  height: 34px;   /* Más alto que antes */
+}
+
+thead tr.filter-row input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* ─── Cos de la taula ─── */
+tbody td {
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
+}
+
+tbody tr:hover { background: #fafbff; }
+
+.audio-cell audio {
+  height: 28px;
+  width: 180px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+}
+
+/* ─── Estats de càrrega ─── */
+#loading-indicator,
+#end-of-list {
+  text-align: center;
+  padding: 0.9rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+#loading-indicator i {
+  margin-right: 0.4rem;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  #intro-panel {
+    margin: 0.75rem 1rem;
+    padding: 1rem 2.5rem 1rem 1rem;
+  }
+
+  main {
+    padding: 0 1rem 2rem;
+  }
+
+  .page-header {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.15rem;
+  }
+
+  .controls {
+    gap: 0.5rem;
+  }
+
+  .global-filter {
+    flex: 1 1 100%;
+    min-width: 0;
+    padding: 0.5rem 0.6rem;
+  }
+
+  /* Label "Búsqueda global" amagada en mòbil per guanyar espai */
+  .global-filter label {
+    display: none;
+  }
+
+  #clear-all-filters {
+    flex: 1 1 100%;
+  }
+
+  /* Taula: scroll horitzontal si cal, però amplades mínimes per veure més columnes */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  thead th {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  /* Filtres compactes: només "Filtrar" com a placeholder i amplada mínima */
+  thead tr.filter-row input {
+    min-width: 60px;
+    padding: 0.4rem 0.35rem;
+    font-size: 0.8rem;
+    height: 32px;
+  }
+
+  tbody td {
+    padding: 0.4rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .audio-cell audio {
+    width: 120px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1rem;
+  }
+
+  thead tr.filter-row input {
+    min-width: 50px;
+  }
+
+  .audio-cell audio {
+    width: 100px;
+  }
+}

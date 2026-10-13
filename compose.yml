@@ -1,0 +1,10 @@
+services:
+  diccionari:
+    build: .
+    container_name: diccionari-transcripcions
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/srv/public:ro
+      - ./content:/srv/content:ro
+    restart: unless-stopped

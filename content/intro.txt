@@ -1,0 +1,6 @@
+<h1>Annex 5 de la Guia d'estil per al tractament dels mots xinesos en català (Biblioteca Tècnica de Política Lingüística, 13)</h1>
+ISBN: 978-84-18601-17-0     DOI: 10.2436/15.8040.02.1<br/>
+<br/>
+L'Annex 5 és un glossari consistnt en un recull de paraules d’origen xinès que els darrers anys han estat emprades amb relativa freqüència en textos en català. No pretén ser exhaustiu, sinó que té per objectiu establir recomanacions respecte a totes les paraules que poden presentar dubtes a l’usuari. Les paraules estan escrites en pinyin i en caràcters xinesos i van acompanyades de la proposta d’ús en català. A més, estan categoritzades d’acord amb els diferents capítols de la guia, per facilitar-ne la cerca. Finalment, indiquem quines formes desestimem en els casos que hem documentat de formes diverses i incorrectes.<br/>
+<br/>
+Mitjançant el cercador es poden fer cerques de termes i seleccionar-los per criteris diversos (pinyin, caràcters xinesos, formes catalanes, capítols de la guia i categories).<br/>

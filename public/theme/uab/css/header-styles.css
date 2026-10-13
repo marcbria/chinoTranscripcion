@@ -1,0 +1,298 @@
+/* ============================================================
+   header-styles.css — Estils del header de la UAB
+   Aïllats sota .uab-header-wrapper per no interferir amb la
+   resta de la pàgina (taula de transcripcions).
+   ============================================================ */
+
+.uab-header-wrapper {
+    font-family: 'NimbusSanL', Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+}
+
+.uab-header-wrapper *,
+.uab-header-wrapper *::before,
+.uab-header-wrapper *::after {
+    box-sizing: border-box;
+}
+
+.uab-header-wrapper .container {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+}
+
+/* ─── Prenavigation ─── */
+.uab-header-wrapper .prenavigation {
+    background-color: #dfdfdf;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-size: 0.85rem;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.uab-header-wrapper .prenavigation > .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.uab-header-wrapper .prenavigation a {
+    color: #333;
+    text-decoration: none;
+}
+
+.uab-header-wrapper .prenavigation a:hover {
+    text-decoration: underline;
+}
+
+.uab-header-wrapper .prenavigation .region-prenavigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.uab-header-wrapper .prenavigation .region-prenavigation > * {
+    display: flex;
+    align-items: center;
+    margin: 0 14px;
+}
+
+.uab-header-wrapper .prenavigation .directori a {
+    color: #333;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 0.85rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
+
+.uab-header-wrapper .prenavigation .links-inline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.uab-header-wrapper .prenavigation .prenav-lang-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.uab-header-wrapper .prenavigation .prenav-lang-item a {
+    padding: 0;
+    margin: 0;
+    color: #333;
+    text-decoration: none;
+}
+
+.uab-header-wrapper .prenavigation .prenav-lang-item:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 1rem;
+    background-color: #000;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+.uab-header-wrapper .prenavigation .prenav-lang-item.active a {
+    color: #007e11 !important;
+    font-weight: 600 !important;
+}
+
+/* ─── Xarxes socials ─── */
+.uab-header-wrapper .social-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.uab-header-wrapper .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    color: #333;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.uab-header-wrapper .social-links a:hover {
+    color: #007e11;
+    text-decoration: none;
+}
+
+/* ─── Navegació principal ─── */
+.uab-header-wrapper .navbar {
+    background: #fff;
+    border-bottom: 1px solid #CCC;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.uab-header-wrapper .navbar .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.uab-header-wrapper .navbar-brand {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+.uab-header-wrapper .navbar-brand img,
+.uab-header-wrapper .navbar-brand svg {
+    max-height: 52px;
+    height: auto;
+    width: auto;
+    display: block;
+}
+
+.uab-header-wrapper .navbar-toggler {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #007e11;
+    padding: 4px 8px;
+    line-height: 1;
+}
+
+.uab-header-wrapper .navbar-toggler:hover {
+    color: #005c0b;
+}
+
+.uab-header-wrapper .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    gap: 0;
+}
+
+.uab-header-wrapper .prenav-menu-item {
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.uab-header-wrapper .nav-link {
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-decoration: none;
+    padding: 8px 0;
+    display: block;
+    transition: color 0.2s;
+}
+
+.uab-header-wrapper .prenav-menu-item .nav-link {
+    font-size: 18px;
+}
+
+.uab-header-wrapper .nav-link:hover {
+    color: #007e11;
+}
+
+.uab-header-wrapper .prenav-menu-item:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: calc(1.2rem + 6px);
+    background-color: #000;
+    margin: 0 12px;
+    vertical-align: middle;
+}
+
+.uab-header-wrapper .prenav-menu-item.active .nav-link {
+    color: #007e11 !important;
+}
+
+.uab-header-wrapper .prenav-menu-item.active .nav-link::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 6px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #007e11;
+    vertical-align: middle;
+    position: relative;
+    top: -3px;
+}
+
+.uab-header-wrapper .navbar-collapse {
+    flex-basis: 100%;
+    flex-grow: 1;
+    align-items: center;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .uab-header-wrapper .navbar-toggler {
+        display: block;
+    }
+    .uab-header-wrapper .navbar-collapse {
+        display: none;
+    }
+    .uab-header-wrapper .navbar-collapse.show {
+        display: block;
+    }
+    .uab-header-wrapper .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        padding: 12px 0;
+        gap: 4px;
+    }
+    .uab-header-wrapper .prenav-menu-item {
+        border-right: none;
+        padding: 4px 0;
+        display: block;
+    }
+    .uab-header-wrapper .prenav-menu-item:not(:last-child)::after {
+        display: none;
+    }
+    .uab-header-wrapper .nav-link {
+        font-size: 1.1rem;
+    }
+
+    .uab-header-wrapper .prenavigation .region-prenavigation {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .uab-header-wrapper .prenavigation .region-prenavigation > * {
+        margin: 0 6px;
+    }
+}
+
+@media (min-width: 769px) {
+    .uab-header-wrapper .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+    }
+    .uab-header-wrapper .navbar-nav {
+        flex-direction: row;
+        margin-left: auto;
+    }
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diccionario de transcripciones del chino</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="theme/uab/css/header-styles.css" />
+  <!-- Font Awesome (iconos: lupa, X, etc.) -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ═══════════ HEADER TEMA UAB ═══════════ -->
+  <div class="uab-header-wrapper">
+
+    <!-- Prenavigation: Directori · idioma · xarxes -->
+    <div id="prenavigation" class="prenavigation">
+      <div class="container">
+        <section class="region region-prenavigation">
+
+          <div class="item directori">
+            <span class="prenav dir"><a href="/directori">Directori</a></span>
+          </div>
+
+          <nav class="links nav links-inline" aria-label="Selector de idioma">
+            <span class="prenav-lang-item ca" data-lang="ca">
+              <a href="?lang=ca" hreflang="ca">Català</a>
+            </span>
+            <span class="prenav-lang-item es active" data-lang="es">
+              <a href="?lang=es" hreflang="es">Español</a>
+            </span>
+            <span class="prenav-lang-item en" data-lang="en">
+              <a href="?lang=en" hreflang="en">English</a>
+            </span>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.instagram.com/publicacionsuab/" target="_blank" rel="noopener" title="Instagram">IG</a>
+            <a href="https://bsky.app/profile/publicacionsuab.bsky.social" target="_blank" rel="noopener" title="Bluesky">BS</a>
+            <a href="mailto:sp@uab.cat" title="Mail"><i class="fa-solid fa-envelope"></i></a>
+          </div>
+
+        </section>
+      </div>
+    </div>
+
+    <!-- Navbar principal -->
+    <header class="navbar" id="navbar-main" role="banner">
+      <div class="container">
+        <div class="navbar-brand">
+          <a href="https://publicacions.uab.cat/" title="Publicacions UAB">
+            <img src="theme/uab/img/logo-uab.svg" alt="Universitat Autònoma de Barcelona" />
+          </a>
+        </div>
+
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation"
+                onclick="document.getElementById('navbar-collapse').classList.toggle('show')">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div id="navbar-collapse" class="navbar-collapse">
+          <ul class="navbar-nav">
+            <li class="prenav-menu-item">
+              <a href="/servei/presentacio" class="nav-link">El Servei</a>
+            </li>
+            <li class="prenav-menu-item active">
+              <a href="#" class="nav-link" title="Libros">Libros</a>
+            </li>
+            <li class="prenav-menu-item">
+              <a href="/revistes" class="nav-link" title="Revistas científicas">Revistas</a>
+            </li>
+            <li class="prenav-menu-item">
+              <a href="/altres-productes-activitats" class="nav-link" title="Otros servicios">Otros</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ═══════════ CONTENIDO PRINCIPAL ═══════════ -->
+
+  <header class="page-header">
+    <h1>Correspondencias entre transcripciones del repertorio silábico chino</h1>
+    <p class="subtitle">Hanyu Pinyin · Wade-Giles · AFI</p>
+  </header>
+
+  <!-- Intro visible por defecto con botón X en la esquina superior derecha -->
+  <section id="intro-panel" aria-live="polite">
+    <button id="close-intro" class="intro-close" title="Cerrar introducción" aria-label="Cerrar introducción">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div id="intro-content">Cargando introducción…</div>
+  </section>
+
+  <main>
+    <section class="controls">
+      <div class="global-filter">
+        <label for="global-filter-input">Búsqueda global:</label>
+        <input
+          type="text"
+          id="global-filter-input"
+          placeholder="Buscar…"
+          autocomplete="off"
+        />
+        <span class="global-filter-icon" aria-hidden="true">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+      </div>
+      <button id="clear-all-filters" class="secondary">Resetear filtros</button>
+    </section>
+
+    <section class="counter" id="counter">Mostrando 0 de 0 resultados</section>
+
+    <div class="table-wrapper" id="table-wrapper">
+      <table id="dictionary-table">
+        <thead>
+          <tr id="header-row"></tr>
+          <tr id="filter-row"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <div id="loading-indicator" class="hidden">
+        <i class="fa-solid fa-spinner fa-spin"></i> Cargando más resultados…
+      </div>
+      <div id="end-of-list" class="hidden">— Fin de los resultados —</div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
