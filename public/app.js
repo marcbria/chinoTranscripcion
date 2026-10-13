@@ -39,10 +39,6 @@ function normalize(str) {
     .toLowerCase();
 }
 
-/**
- * Debounce simple: retorna una funció que només s'executa
- * `wait` ms després de l'última crida.
- */
 function debounce(fn, wait) {
   let t = null;
   return function (...args) {
@@ -210,11 +206,10 @@ function renderFilterRow() {
 
     const input = document.createElement('input');
     input.type = 'text';
-    input.placeholder = 'Filtrar';   // Placeholder compacte
+    input.placeholder = 'Filtrar';
     input.value = state.columnFilters[col] ?? '';
     input.dataset.column = col;
 
-    // Debounce per evitar re-renders a cada tecla
     input.addEventListener('input', debounce(e => {
       const val = e.target.value;
       if (val) {
@@ -251,15 +246,28 @@ function renderBody() {
     return;
   }
 
+  // Precomputem l'índex de la columna activa per aplicar-hi la classe
+  const activeColName = state.sort.column;
+  const activeColIndex = activeColName
+    ? state.headers.indexOf(activeColName)
+    : -1;
+
   for (const row of visible) {
     const tr = document.createElement('tr');
-    state.headers.forEach(h => {
+    state.headers.forEach((h, idx) => {
       const td = document.createElement('td');
       td.textContent = row[h] ?? '';
+      if (idx === activeColIndex) {
+        td.classList.add('sorted-col');
+      }
       tr.appendChild(td);
     });
     const tdSound = document.createElement('td');
     tdSound.className = 'audio-cell';
+    if (activeColIndex === -1 && activeColName === 'sonido') {
+      // per coherència, si la columna "sonido" fos la ordenada
+      // no s'aplica perquè no és ordenable
+    }
     const pinyin = row['Hanyu Pinyin'];
     if (pinyin) {
       const audio = document.createElement('audio');
@@ -296,11 +304,9 @@ function renderEndStates() {
   }
 
   if (showing >= total) {
-    // Hem arribat al final: mostrem només el missatge de final
     loading.classList.add('hidden');
     endList.classList.remove('hidden');
   } else {
-    // Encara queden resultats: mostrem el missatge de càrrega
     loading.classList.remove('hidden');
     endList.classList.add('hidden');
   }
@@ -319,7 +325,6 @@ function refresh() {
 /* ---------------- Scroll infinit ---------------- */
 
 function setupInfiniteScroll() {
-  // Ara la pàgina sencera fa scroll (no un contenidor intern).
   window.addEventListener('scroll', () => {
     const nearBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
@@ -375,7 +380,6 @@ function readURL() {
 function setupControls() {
   const globalInput = document.getElementById('global-filter-input');
 
-  // Debounce també al filtre global
   globalInput.addEventListener('input', debounce(e => {
     state.globalFilter = e.target.value;
     state.visibleCount = PAGE_SIZE;
@@ -392,7 +396,6 @@ function setupControls() {
     updateURL();
   });
 
-  // Botó X per tancar la intro
   document.getElementById('close-intro').addEventListener('click', () => {
     document.getElementById('intro-panel').classList.add('hidden');
   });
