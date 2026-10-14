@@ -4,8 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diccionario de transcripciones del chino</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="theme/uab/css/header-styles.css" />
+
+  <!-- Fija la resolución de todas las rutas relativas contra el subpath
+       público. Imprescindible detrás de Traefik con StripPrefix cuando
+       se sirve bajo un subdirectorio (p. ej. /es/transcripciones/). -->
+  <base href="__BASE_PATH__">
+
+  <!-- Favicon vacío para evitar el 404 de /favicon.ico -->
+  <link rel="icon" href="data:," />
+
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./theme/uab/css/header-styles.css" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
@@ -48,7 +57,7 @@
       <div class="container">
         <div class="navbar-brand">
           <a href="https://publicacions.uab.cat/" title="Publicacions UAB">
-            <img src="theme/uab/img/logo-uab.svg" alt="Universitat Autònoma de Barcelona" />
+            <img src="./theme/uab/img/logo-uab.svg" alt="Universitat Autònoma de Barcelona" />
           </a>
         </div>
 
@@ -130,6 +139,6 @@
     </div>
   </main>
 
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
