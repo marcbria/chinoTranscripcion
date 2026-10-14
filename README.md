@@ -43,7 +43,7 @@ tags:
 ```mermaid
 flowchart LR
     Browser["Navegador"] -->|HTTP :8080| Nginx["nginx:1.27-alpine"]
-    Nginx -->|"/"| Public["/srv/public (RO)"]
+    Nginx -->|"/"| Public["/srv/public-rw"]
     Nginx -->|"/content/*"| Content["/srv/content (RO)"]
     Public --> Front["index.html · app.js · styles.css · theme/uab"]
     Content --> CSV["transcripcion.csv"]
@@ -59,8 +59,10 @@ flowchart LR
 .
 ├── README.md
 ├── compose.yml              # Servicio nginx con volúmenes RO
+├── compose.traefik.yml      # Overlay para producción (Traefik + TLS)
 ├── Dockerfile               # Imagen mínima basada en nginx:1.27-alpine
 ├── nginx.conf               # Configuración de nginx (root + alias)
+├── run.sh                   # Script de arranque (dev / prod)
 ├── content/                 # Datos y audios (volumen RO)
 │   ├── transcripcion.csv    # Fuente del diccionario (Hanyu/Wade/AFI)
 │   ├── intro.txt            # Texto HTML de la introducción
@@ -83,17 +85,43 @@ flowchart LR
 
 - Docker y Docker Compose v2 (`docker compose`).
 
-### <i class="fa-solid fa-play"></i> Arranque
+### <i class="fa-solid fa-terminal"></i> Uso de `run.sh`
+
+El proyecto incluye un script `run.sh` que envuelve los comandos de Docker Compose para los dos entornos:
+
+- **`dev`** — arranca solo `compose.yml`. Publica la app en `http://localhost:8080`. Útil para desarrollo local sin TLS ni reverse-proxy.
+- **`prod`** — arranca `compose.yml` + `compose.traefik.yml`. No publica puertos: la app se sirve detrás de Traefik (con TLS y `StripPrefix`) bajo `${BASE_URL}${BASE_PATH_PREFIX}`. Requiere que la red externa `proxy` ya exista y que Traefik esté corriendo.
+
+Comandos disponibles:
+
+```bash
+./run.sh dev            # Arranca en desarrollo (puerto 8080)
+./run.sh prod           # Arranca en producción (vía Traefik)
+./run.sh down           # Detiene ambos entornos
+./run.sh logs           # Logs en primer plano (dev)
+./run.sh logs-prod      # Logs en primer plano (prod)
+./run.sh rebuild        # Reconstruye la imagen sin caché y reinicia (dev)
+./run.sh rebuild-prod   # Reconstruye la imagen sin caché y reinicia (prod)
+./run.sh config         # Muestra la configuración fusionada (dev)
+./run.sh config-prod    # Muestra la configuración fusionada (prod)
+./run.sh help           # Ayuda
+```
+
+Notas:
+
+- **`dev` y `prod` no fuerzan build**: si la imagen no existe, Docker Compose la construye; si ya existe, se reutiliza. Para forzar una reconstrucción completa, usa `rebuild` / `rebuild-prod`.
+- **`dev` y `prod` conviven mal en el mismo host** si el puerto 8080 ya está ocupado por otro servicio (por ejemplo, el dashboard de Traefik). En ese caso, usa solo `prod` o cambia el mapeo de puertos en `compose.yml`.
+- Los cambios en `public/` y `content/` **no requieren reconstruir**: son volúmenes RO y se reflejan al recargar el navegador.
+
+### <i class="fa-solid fa-play"></i> Arranque manual (sin `run.sh`)
+
+Si prefieres no usar el script:
 
 ```bash
 docker compose up -d
 ```
 
-La aplicación queda disponible en:
-
-```text
-http://localhost:8080
-```
+La aplicación queda disponible en `http://localhost:8080`.
 
 ### <i class="fa-solid fa-stop"></i> Detener
 
@@ -103,7 +131,7 @@ docker compose down
 
 ### <i class="fa-solid fa-rotate"></i> Reconstruir la imagen
 
-Normalmente **no hace falta** reconstruir: los volúmenes `./public` y `./content` están montados en modo solo lectura, por lo que cualquier cambio en esos directorios se refleja al recargar el navegador. Solo es necesario reconstruir si modificas `nginx.conf` o el propio `Dockerfile`:
+Normalmente **no hace falta** reconstruir: los volúmenes `./public` y `./content` están montados en modo solo lectura, por lo que cualquier cambio en esos directorios se refleja al recargar el navegador. Solo es necesario reconstruir si modificas `nginx.conf`, `docker/entrypoint.sh` o el propio `Dockerfile`:
 
 ```bash
 docker compose build --no-cache
@@ -116,7 +144,7 @@ docker compose up -d
 
 ### <i class="fa-solid fa-server"></i> `nginx.conf`
 
-- `root /srv/public` sirve el frontend estático (`index.html`, `app.js`, `styles.css`, `theme/…`).
+- `root /srv/public-rw` sirve el frontend estático (`index.html`, `app.js`, `styles.css`, `theme/…`). El `entrypoint.sh` copia `/srv/public` (RO) a `/srv/public-rw` (RW) para poder sustituir `__BASE_PATH__` sin tocar el original.
 - `alias /srv/content/…` sirve el CSV, la introducción y los audios desde una ruta independiente, evitando conflictos de montaje entre volúmenes RO.
 
 ### <i class="fa-solid fa-link"></i> Variables de URL
@@ -196,10 +224,12 @@ Para cambiar de tema, crea una carpeta hermana (`public/theme/<nombre>/`) y refe
 |-----------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | El CSV devuelve 404                                 | Comprueba que `content/transcripcion.csv` existe y que el volumen RO está bien montado.      |
 | Los MP3 no suenan                                   | El nombre del fichero debe coincidir exactamente con `Hanyu Pinyin` (con diéresis: `lü.mp3`). |
-| La tabla no muestra datos                           | Abre la consola del navegador y revisa si `fetch('/content/transcripcion.csv')` devuelve 200. |
+| La tabla no muestra datos                           | Abre la consola del navegador y revisa si `fetch('./content/transcripcion.csv')` devuelve 200.|
 | Los filtros no responden al instante                | Comportamiento intencionado: hay un *debounce* de 250 ms para no re-renderizar en cada tecla. |
 | El header de la tabla no queda fijo al hacer scroll | Asegúrate de que `.table-wrapper` no tiene `overflow: auto` ni `overflow-x` en el breakpoint. |
 | Cambios en `public/` no se reflejan                 | Recarga forzada con Ctrl+Shift+R; nginx envía `Cache-Control: no-cache` para HTML/CSS/JS.     |
+| `Bind for 0.0.0.0:8080 failed`                      | Otro servicio (p. ej. Traefik) ocupa el 8080. Cambia el mapeo en `compose.yml` o usa solo `prod`.|
+| Las cajas de filtro se ven redondeadas en Firefox   | Ya corregido con `appearance: none` + `border-radius: 0 !important`. Si persiste, revisa que no haya caché agresiva (Ctrl+Shift+R). |
 
 ---
 
