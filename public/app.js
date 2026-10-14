@@ -11,6 +11,11 @@ const CSV_URL = './content/transcripcion.csv';
 const INTRO_URL = './content/intro.txt';
 const SOUND_BASE = './content/sounds/';
 
+/* Referencia al <audio> que está sonando en este momento, para
+   poder pararlo cuando el usuario pulsa play en otra fila. */
+let currentAudio = null;
+let currentButton = null;
+
 const state = {
   allRows: [],
   headers: [],
@@ -156,6 +161,88 @@ function applySort() {
   });
 }
 
+/* ---------------- Reproductor de audio ---------------- */
+
+/* Parar el audio que esté sonando (si lo hay) y resetear su botón. */
+function stopCurrentAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+  if (currentButton) {
+    currentButton.classList.remove('playing');
+    currentButton.innerHTML = '<i class="fa-solid fa-play"></i>';
+    currentButton.setAttribute('aria-label', 'Reproducir audio');
+    currentButton.setAttribute('title', 'Reproducir audio');
+  }
+  currentAudio = null;
+  currentButton = null;
+}
+
+/* Crea un reproductor compacto: botón con icono + <audio> oculto. */
+function createAudioPlayer(src, label) {
+  const wrapper = document.createElement('span');
+  wrapper.className = 'audio-player';
+
+  const audio = document.createElement('audio');
+  audio.preload = 'none';
+  audio.src = src;
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'audio-play-btn';
+  button.innerHTML = '<i class="fa-solid fa-play"></i>';
+  button.setAttribute('aria-label', `Reproducir ${label}`);
+  button.setAttribute('title', `Reproducir ${label}`);
+
+  button.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    if (currentAudio === audio && !audio.paused) {
+      // Está sonando este: lo paramos.
+      stopCurrentAudio();
+      return;
+    }
+
+    // Si hay otro sonando, lo paramos primero.
+    if (currentAudio && currentAudio !== audio) {
+      stopCurrentAudio();
+    }
+
+    audio.play().then(() => {
+      currentAudio = audio;
+      currentButton = button;
+      button.classList.add('playing');
+      button.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      button.setAttribute('aria-label', `Pausar ${label}`);
+      button.setAttribute('title', `Pausar ${label}`);
+    }).catch(err => {
+      console.warn('No se pudo reproducir el audio:', err);
+    });
+  });
+
+  audio.addEventListener('ended', () => {
+    if (currentAudio === audio) {
+      currentAudio = null;
+      currentButton = null;
+    }
+    button.classList.remove('playing');
+    button.innerHTML = '<i class="fa-solid fa-play"></i>';
+    button.setAttribute('aria-label', `Reproducir ${label}`);
+    button.setAttribute('title', `Reproducir ${label}`);
+  });
+
+  audio.addEventListener('error', () => {
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+    button.setAttribute('title', `Audio no disponible: ${label}`);
+  });
+
+  wrapper.appendChild(button);
+  wrapper.appendChild(audio);
+  return wrapper;
+}
+
 /* ---------------- Render ---------------- */
 
 function renderHeader() {
@@ -248,7 +335,6 @@ function renderBody() {
     return;
   }
 
-  // Precomputem l'índex de la columna activa per aplicar-hi la classe
   const activeColName = state.sort.column;
   const activeColIndex = activeColName
     ? state.headers.indexOf(activeColName)
@@ -264,18 +350,14 @@ function renderBody() {
       }
       tr.appendChild(td);
     });
+
     const tdSound = document.createElement('td');
     tdSound.className = 'audio-cell';
     const pinyin = row['Hanyu Pinyin'];
     if (pinyin) {
-      const audio = document.createElement('audio');
-      audio.controls = true;
-      audio.preload = 'none';
-      const source = document.createElement('source');
-      source.src = `${SOUND_BASE}${pinyin}.mp3`;
-      source.type = 'audio/mpeg';
-      audio.appendChild(source);
-      tdSound.appendChild(audio);
+      const src = `${SOUND_BASE}${pinyin}.mp3`;
+      const player = createAudioPlayer(src, pinyin);
+      tdSound.appendChild(player);
     }
     tr.appendChild(tdSound);
     tbody.appendChild(tr);
