@@ -5,9 +5,11 @@
 const PAGE_SIZE = 20;
 const FILTER_DEBOUNCE_MS = 250;
 
-const CSV_URL = '/content/transcripcion.csv';
-const INTRO_URL = '/content/intro.txt';
-const SOUND_BASE = '/content/sounds/';
+/* Rutas relativas: imprescindibles detrás de un reverse-proxy
+   que sirve la app bajo un subpath (p. ej. /es/transcripciones). */
+const CSV_URL = './content/transcripcion.csv';
+const INTRO_URL = './content/intro.txt';
+const SOUND_BASE = './content/sounds/';
 
 const state = {
   allRows: [],
@@ -264,10 +266,6 @@ function renderBody() {
     });
     const tdSound = document.createElement('td');
     tdSound.className = 'audio-cell';
-    if (activeColIndex === -1 && activeColName === 'sonido') {
-      // per coherència, si la columna "sonido" fos la ordenada
-      // no s'aplica perquè no és ordenable
-    }
     const pinyin = row['Hanyu Pinyin'];
     if (pinyin) {
       const audio = document.createElement('audio');
