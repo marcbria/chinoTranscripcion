@@ -2,6 +2,12 @@
    header-styles.css — Estils del header de la UAB
    Aïllats sota .uab-header-wrapper per no interferir amb la
    resta de la pàgina (taula de transcripcions).
+
+   - Icones socials: SVG oficials descarregats a
+     ./theme/uab/img/social/{instagram,bluesky,mail}.svg,
+     resolts pel <base> del document.
+   - Logo: WebP oficial a ./theme/uab/img/logo.webp,
+     resolt pel <base> del document.
    ============================================================ */
 
 .uab-header-wrapper {
@@ -25,6 +31,7 @@
     width: 100%;
 }
 
+/* ─── Prenavegació ─── */
 .uab-header-wrapper .prenavigation {
     background-color: #dfdfdf;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -56,6 +63,7 @@
     align-items: center;
     gap: 8px;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .uab-header-wrapper .prenavigation .region-prenavigation > * {
@@ -69,7 +77,6 @@
     text-decoration: none;
     font-weight: normal;
     font-size: 0.85rem;
-    line-height: 1;
     display: inline-flex;
     align-items: center;
 }
@@ -109,10 +116,12 @@
     font-weight: 600 !important;
 }
 
+/* ─── Icones socials (SVG oficials servits localment) ─── */
 .uab-header-wrapper .social-links {
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .uab-header-wrapper .social-links a {
@@ -121,16 +130,22 @@
     justify-content: center;
     width: 26px;
     height: 26px;
-    color: #333;
-    font-size: 0.95rem;
     text-decoration: none;
+    transition: opacity 0.15s ease;
 }
 
 .uab-header-wrapper .social-links a:hover {
-    color: #007e11;
     text-decoration: none;
+    opacity: 0.75;
 }
 
+.uab-header-wrapper .social-links img {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+/* ─── Navbar ─── */
 .uab-header-wrapper .navbar {
     background: #fff;
     border-bottom: 1px solid #CCC;
@@ -143,20 +158,23 @@
 
 .uab-header-wrapper .navbar .container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 }
 
 .uab-header-wrapper .navbar-brand {
     margin-right: auto;
     display: flex;
     align-items: center;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
-.uab-header-wrapper .navbar-brand img,
-.uab-header-wrapper .navbar-brand svg {
+.uab-header-wrapper .navbar-brand img {
     max-height: 52px;
+    max-width: 100%;
     height: auto;
     width: auto;
     display: block;
@@ -171,6 +189,7 @@
     color: #007e11;
     padding: 4px 8px;
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .uab-header-wrapper .navbar-toggler:hover {
@@ -195,15 +214,11 @@
 .uab-header-wrapper .nav-link {
     color: #1a1a1a;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 18px;
     text-decoration: none;
     padding: 8px 0;
     display: block;
     transition: color 0.2s;
-}
-
-.uab-header-wrapper .prenav-menu-item .nav-link {
-    font-size: 18px;
 }
 
 .uab-header-wrapper .nav-link:hover {
@@ -244,41 +259,99 @@
     align-items: center;
 }
 
+/* ─── Responsive ─── */
 @media (max-width: 768px) {
+
+    .uab-header-wrapper .container {
+        padding: 0 16px;
+    }
+
+    /* Prenavegació: todo el grupo alineado a la derecha */
+    .uab-header-wrapper .prenavigation {
+        min-height: 36px;
+    }
+
+    .uab-header-wrapper .prenavigation .region-prenavigation {
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .uab-header-wrapper .prenavigation .region-prenavigation > * {
+        margin: 0 6px;
+        flex-shrink: 0;
+    }
+
+    .uab-header-wrapper .prenavigation .prenav-lang-item:not(:last-child)::after {
+        margin: 0 5px;
+    }
+
+    .uab-header-wrapper .social-links a {
+        width: 22px;
+        height: 22px;
+    }
+
+    .uab-header-wrapper .social-links img {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Navbar: el container pasa a wrap para que el menú caiga
+       debajo del logo (segunda fila). */
+    .uab-header-wrapper .navbar {
+        padding: 8px 0;
+    }
+
+    .uab-header-wrapper .navbar .container {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .uab-header-wrapper .navbar-brand {
+        flex: 1 1 auto;
+    }
+
+    .uab-header-wrapper .navbar-brand img {
+        max-height: 40px;
+    }
+
     .uab-header-wrapper .navbar-toggler {
         display: block;
+        font-size: 1.4rem;
+        margin-left: auto;
     }
+
+    /* El menú desplegable ocupa una segunda fila completa */
     .uab-header-wrapper .navbar-collapse {
         display: none;
+        flex-basis: 100%;
+        width: 100%;
+        margin-top: 8px;
     }
+
     .uab-header-wrapper .navbar-collapse.show {
         display: block;
     }
+
     .uab-header-wrapper .navbar-nav {
         flex-direction: column;
         width: 100%;
-        padding: 12px 0;
+        padding: 12px 0 4px;
         gap: 4px;
     }
+
     .uab-header-wrapper .prenav-menu-item {
         border-right: none;
         padding: 4px 0;
         display: block;
     }
+
     .uab-header-wrapper .prenav-menu-item:not(:last-child)::after {
         display: none;
     }
+
     .uab-header-wrapper .nav-link {
         font-size: 1.1rem;
-    }
-
-    .uab-header-wrapper .prenavigation .region-prenavigation {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-    .uab-header-wrapper .prenavigation .region-prenavigation > * {
-        margin: 0 6px;
     }
 }
 
@@ -290,5 +363,40 @@
     .uab-header-wrapper .navbar-nav {
         flex-direction: row;
         margin-left: auto;
+    }
+}
+
+/* ─── Móviles muy estrechos (≤ 480 px) ─── */
+@media (max-width: 480px) {
+
+    .uab-header-wrapper .prenavigation .directori a {
+        font-size: 0.8rem;
+    }
+
+    .uab-header-wrapper .prenavigation .prenav-lang-item a {
+        font-size: 0.8rem;
+    }
+
+    .uab-header-wrapper .prenavigation .region-prenavigation > * {
+        margin: 0 4px;
+    }
+
+    .uab-header-wrapper .social-links a {
+        width: 20px;
+        height: 20px;
+    }
+
+    .uab-header-wrapper .social-links img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .uab-header-wrapper .navbar-brand img {
+        max-height: 34px;
+    }
+
+    .uab-header-wrapper .navbar-toggler {
+        font-size: 1.3rem;
+        padding: 2px 6px;
     }
 }

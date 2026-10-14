@@ -47,9 +47,23 @@
           </nav>
 
           <div class="social-links">
-            <a href="https://www.instagram.com/publicacionsuab/" target="_blank" rel="noopener" title="Instagram">IG</a>
-            <a href="https://bsky.app/profile/publicacionsuab.bsky.social" target="_blank" rel="noopener" title="Bluesky">BS</a>
-            <a href="mailto:sp@uab.cat" title="Mail"><i class="fa-solid fa-envelope"></i></a>
+            <a href="https://www.instagram.com/publicacionsuab/"
+               target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+              <img src="./theme/uab/img/social/instagram.svg"
+                   alt="Instagram" width="22" height="22"
+                   decoding="async" />
+            </a>
+            <a href="https://bsky.app/profile/publicacionsuab.bsky.social"
+               target="_blank" rel="noopener" title="Bluesky" aria-label="Bluesky">
+              <img src="./theme/uab/img/social/bluesky.svg"
+                   alt="Bluesky" width="22" height="22"
+                   decoding="async" />
+            </a>
+            <a href="mailto:sp@uab.cat" title="Mail" aria-label="Correo electrónico">
+              <img src="./theme/uab/img/social/mail.svg"
+                   alt="Correo electrónico" width="22" height="22"
+                   decoding="async" />
+            </a>
           </div>
 
         </section>
@@ -60,7 +74,9 @@
       <div class="container">
         <div class="navbar-brand">
           <a href="https://publicacions.uab.cat/" title="Publicacions UAB">
-            <img src="./theme/uab/img/logo-uab.svg" alt="Universitat Autònoma de Barcelona" />
+            <img src="./theme/uab/img/logo.webp"
+                 alt="Universitat Autònoma de Barcelona"
+                 loading="eager" decoding="async" />
           </a>
         </div>
 
@@ -92,43 +108,47 @@
   <!-- ═══════════ CONTENIDO PRINCIPAL ═══════════ -->
 
   <header class="page-header">
-    <h1>Correspondencias entre transcripciones del repertorio silábico chino</h1>
-    <section id="intro-content" class="intro" aria-live="polite">
-      Cargando introducción…
-    </section>
+    <div class="container">
+      <h1>Correspondencias entre transcripciones del repertorio silábico chino</h1>
+      <section id="intro-content" class="intro" aria-live="polite">
+        Cargando introducción…
+      </section>
+    </div>
   </header>
 
   <main>
-    <section class="controls">
-      <div class="global-filter">
-        <label for="global-filter-input">Búsqueda global:</label>
-        <input
-          type="text"
-          id="global-filter-input"
-          placeholder="Buscar…"
-          autocomplete="off"
-        />
-        <span class="global-filter-icon" aria-hidden="true">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-      </div>
-      <button id="clear-all-filters" class="secondary">Resetear filtros</button>
-    </section>
+    <div class="container">
+      <section class="controls">
+        <div class="global-filter">
+          <label for="global-filter-input">Búsqueda global:</label>
+          <input
+            type="text"
+            id="global-filter-input"
+            placeholder="Buscar…"
+            autocomplete="off"
+          />
+          <span class="global-filter-icon" aria-hidden="true">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+        </div>
+        <button id="clear-all-filters" class="secondary">Resetear filtros</button>
+      </section>
 
-    <section class="counter" id="counter">Mostrando 0 de 0 resultados</section>
+      <section class="counter" id="counter">Mostrando 0 de 0 resultados</section>
 
-    <div class="table-wrapper" id="table-wrapper">
-      <table id="dictionary-table">
-        <thead>
-          <tr id="header-row"></tr>
-          <tr id="filter-row"></tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
-      <div id="loading-indicator" class="hidden">
-        <i class="fa-solid fa-spinner fa-spin"></i> Cargando más resultados…
+      <div class="table-wrapper" id="table-wrapper">
+        <table id="dictionary-table">
+          <thead>
+            <tr id="header-row"></tr>
+            <tr id="filter-row"></tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div id="loading-indicator" class="hidden">
+          <i class="fa-solid fa-spinner fa-spin"></i> Cargando más resultados…
+        </div>
+        <div id="end-of-list" class="hidden">— Fin de los resultados —</div>
       </div>
-      <div id="end-of-list" class="hidden">— Fin de los resultados —</div>
     </div>
   </main>
 

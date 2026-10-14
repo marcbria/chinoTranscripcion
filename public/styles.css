@@ -16,6 +16,12 @@
   --filter-input-height-mobile: 26px;
   --filter-input-max-width-mobile: 120px;
   --filter-input-max-width-mobile-sm: 100px;
+
+  /* Ancho máximo de contenido, alineado con el .container del navbar UAB. */
+  --content-max-width: 1260px;
+  --content-padding-x: 24px;
+  --content-padding-x-md: 16px;
+  --content-padding-x-sm: 12px;
 }
 
 * { box-sizing: border-box; }
@@ -28,12 +34,27 @@ body {
   line-height: 1.4;
 }
 
+/* ─── Contenedor de contenido ───
+   Replica el .container del navbar UAB: mismo max-width, mismo
+   centrado y mismo padding horizontal. Sólo se aplica al contenido
+   (h1, intro, controls, tabla), NO a las cajas que los envuelven
+   (.page-header y main conservan su fondo a ancho completo). */
+.page-header .container,
+main > .container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding-left: var(--content-padding-x);
+  padding-right: var(--content-padding-x);
+  width: 100%;
+}
+
 /* ─── Capçalera de la pàgina ───
    Conté el títol i el bloc d'introducció (carregat per JS des de
-   content/intro.txt). Tot dins del mateix flux, sense caixa pròpia. */
+   content/intro.txt). El fondo ocupa el 100% del ancho; el contenido
+   se centra gracias al .container interno. */
 .page-header {
   background: var(--panel);
-  padding: 1.5rem 1.5rem 1rem;
+  padding: 1.5rem 0 1rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -100,7 +121,12 @@ button.secondary { background: #f0f0f3; }
 
 .hidden { display: none !important; }
 
-main { padding: 0 1.5rem 3rem; }
+/* ─── Main ───
+   El padding horizontal lo asume el .container interno; aquí sólo
+   queda el padding vertical. */
+main {
+  padding: 0 0 3rem;
+}
 
 /* ─── Controls ─── */
 .controls {
@@ -348,12 +374,15 @@ tbody tr:hover td.sorted-col {
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
-  main {
-    padding: 0 1rem 2rem;
+
+  .page-header .container,
+  main > .container {
+    padding-left: var(--content-padding-x-md);
+    padding-right: var(--content-padding-x-md);
   }
 
   .page-header {
-    padding: 1rem 1rem 0.75rem;
+    padding: 1rem 0 0.75rem;
   }
 
   .page-header h1 {
@@ -443,6 +472,13 @@ tbody tr:hover td.sorted-col {
 }
 
 @media (max-width: 480px) {
+
+  .page-header .container,
+  main > .container {
+    padding-left: var(--content-padding-x-sm);
+    padding-right: var(--content-padding-x-sm);
+  }
+
   .page-header h1 {
     font-size: 15px;
   }
