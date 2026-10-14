@@ -1,20 +1,3 @@
----
-title: Diccionario de transcripciones del chino
-description: Diccionario web dockerizado de correspondencias entre Hanyu Pinyin, Wade-Giles y AFI, con audio por sílaba.
-language: es
-license: GPL-3.0
-author: Marc Bria Ramírez
-organization: Servei de Publicacions de la Universitat Autònoma de Barcelona (UAB)
-tags:
-  - chinese
-  - pinyin
-  - wade-giles
-  - afi
-  - nginx
-  - docker
-  - static-site
----
-
 # Diccionario de transcripciones del chino
 
 <i class="fa-solid fa-language"></i> Aplicación web dockerizada que muestra, de forma dinámica y filtrable, un diccionario de **correspondencias entre transcripciones del repertorio silábico chino**: Hanyu Pinyin, Wade-Giles y AFI, con reproducción de audio para cada sílaba.
