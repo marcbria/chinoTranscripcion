@@ -1,0 +1,21 @@
+services:
+  app:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chinotrans-secure.rule=Host(`${BASE_URL}`) && PathPrefix(`${BASE_PATH_PREFIX}`)"
+      - "traefik.http.routers.chinotrans-secure.entrypoints=websecure"
+      - "traefik.http.routers.chinotrans-secure.tls=true"
+      - "traefik.http.routers.chinotrans-secure.tls.certresolver=leresolver"
+      - "traefik.http.middlewares.chinotrans-strip.stripprefix.prefixes=${BASE_PATH_PREFIX}"
+      - "traefik.http.routers.chinotrans-secure.middlewares=chinotrans-strip"
+
+    # Despublica los puertos heredados de compose.yml.
+    # Sintaxis `!reset` de Docker Compose v2 (>= 2.24).
+    ports: !reset []
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
