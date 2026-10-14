@@ -1,7 +1,9 @@
 services:
-  diccionari:
+  app:
     build: .
-    container_name: diccionari-transcripcions
+    container_name: chinotrans
+    env_file:
+      - .env
     ports:
       - "8080:80"
     volumes:
