@@ -13,8 +13,11 @@
   <!-- Favicon vacío para evitar el 404 de /favicon.ico -->
   <link rel="icon" href="data:," />
 
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./theme/uab/css/header-styles.css" />
+  <!-- Los ?v=__*_HASH__ se sustituyen en el entrypoint por el hash
+       del fichero correspondiente, para forzar cache-busting real
+       en el navegador cuando el contenido cambia. -->
+  <link rel="stylesheet" href="./styles.css?v=__CSS_HASH__" />
+  <link rel="stylesheet" href="./theme/uab/css/header-styles.css?v=__THEME_HASH__" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
@@ -139,6 +142,6 @@
     </div>
   </main>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=__JS_HASH__"></script>
 </body>
 </html>
