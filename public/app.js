@@ -199,12 +199,10 @@ function createAudioPlayer(src, label) {
     e.stopPropagation();
 
     if (currentAudio === audio && !audio.paused) {
-      // Está sonando este: lo paramos.
       stopCurrentAudio();
       return;
     }
 
-    // Si hay otro sonando, lo paramos primero.
     if (currentAudio && currentAudio !== audio) {
       stopCurrentAudio();
     }
@@ -474,10 +472,6 @@ function setupControls() {
     state.visibleCount = PAGE_SIZE;
     refresh();
     updateURL();
-  });
-
-  document.getElementById('close-intro').addEventListener('click', () => {
-    document.getElementById('intro-panel').classList.add('hidden');
   });
 }
 
