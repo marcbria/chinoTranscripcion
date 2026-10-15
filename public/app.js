@@ -119,7 +119,8 @@ async function loadCSV() {
   });
 
   state.displayHeaders = [...state.headers, 'sonido'];
-  state.sort = { column: state.headers[0], direction: 'desc' };
+  /* Orden por defecto: primera columna del CSV, ascendente. */
+  state.sort = { column: state.headers[0], direction: 'asc' };
 }
 
 /* ---------------- Filtres ---------------- */
