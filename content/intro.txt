@@ -1,2 +1,8 @@
-<h2><a href="https://monografies.uab.cat/monografies/catalog/book/guia-estilo-palabras-chino" target="_blank" rel="noopener">Anexo 2 de la Guía de estilo para el uso de palabras de origen chino</a></h2>
-El anexo es una tabla que muestra las correspondencias entre los dos sistemas de transcripción del chino más habituales: el pinyin, actualmente el normativo, y el Wade-Giles. Además, se incluye la transcripción en el alfabeto fonético internacional y un enlace al archivo de sonido correspondiente.
+<h1>
+Transcripción de las sílabas del chino con el Alfabeto Fonético Internacional (AFI)
+</h1>
+<h2><a href="https://doi.org/10.5565/lib/9791388031618" target="_blank" rel="noopener">
+Apéndice 2 de la Guía de estilo para el uso de palabras de origen chino
+</a></h2>
+Este apéndice muestra las correspondencias entre los dos sistemas de transcripción del chino más habituales: el pinyin y el Wade-Giles.<br/>
+Además, se incluye la transcripción en el alfabeto fonético internacional (AFI) con el archivo de audio correspondiente.
